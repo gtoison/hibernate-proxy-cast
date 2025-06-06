@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.github.gtoison</groupId>
+		<artifactId>hibernate-proxy-cast-class-transformer-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>hibernate-proxy-cast-class-transformer</artifactId>
+	<dependencies>
+		<dependency>
+			<groupId>io.smallrye</groupId>
+			<artifactId>jandex</artifactId>
+			<version>${jandex.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jakarta.persistence</groupId>
+			<artifactId>jakarta.persistence-api</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.gtoison</groupId>
+			<artifactId>hibernate-proxy-caster</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>io.smallrye</groupId>
+				<artifactId>jandex-maven-plugin</artifactId>
+				<version>${jandex.version}</version>
+				<executions>
+					<execution>
+						<id>make-test-index</id>
+						<goals>
+							<goal>jandex</goal>
+						</goals>
+						<phase>process-test-classes</phase>
+
+						<configuration>
+							<processDefaultFileSet>false</processDefaultFileSet>
+							<fileSets>
+								<fileSet>
+									<directory>
+										${project.build.directory}/test-classes</directory>
+									<includes>
+										<include>com/foo/*.class</include>
+									</includes>
+								</fileSet>
+							</fileSets>
+							<indexDir>${project.build.directory}/test-classes</indexDir>
+							<indexName>index.idx</indexName>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

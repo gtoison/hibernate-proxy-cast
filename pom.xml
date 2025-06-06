@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.github.gtoison</groupId>
+	<artifactId>hibernate-proxy-cast-class-transformer-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<maven.compiler.source>24</maven.compiler.source>
+		<maven.compiler.target>24</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
+		<slf4j.version>2.0.17</slf4j.version>
+		<jandex.version>3.2.7</jandex.version>
+		<hibernate.version>6.6.11.Final</hibernate.version>
+		<junit.version>5.13.0-M2</junit.version>
+	</properties>
+
+	<modules>
+		<module>hibernate-proxy-cast-class-transformer</module>
+		<module>hibernate-proxy-cast-agent</module>
+		<module>hibernate-proxy-caster</module>
+		<module>hibernate-proxy-caster-maven-plugin</module>
+		<module>hibernate-proxy-cast-test-project</module>
+	</modules>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.14.0</version>
+			</plugin>
+		</plugins>
+	</build>
+</project>
