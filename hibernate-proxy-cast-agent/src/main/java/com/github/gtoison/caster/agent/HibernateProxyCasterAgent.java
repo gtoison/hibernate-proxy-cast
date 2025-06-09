@@ -6,6 +6,9 @@ package com.github.gtoison.caster.agent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.instrument.Instrumentation;
+import java.lang.instrument.UnmodifiableClassException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jboss.jandex.Index;
 import org.jboss.jandex.IndexReader;
@@ -25,7 +28,22 @@ public final class HibernateProxyCasterAgent {
 			HibernateProxyJandexIndexer indexer = new HibernateProxyJandexIndexer(index);
 			HibernateProxyCasterClassTransformer classTransformer = new HibernateProxyCasterClassTransformer(indexer);
 
-			instrumentation.addTransformer(classTransformer);
+			instrumentation.addTransformer(classTransformer, true);
+			
+			// Initializing the class transformer might trigger the load of some user classes, for instance when slf4j loads some user defined log4j plugins
+			List<Class<?>> transformableLoadedClasses = new ArrayList<>();
+			for (Class<?> loadedClass : instrumentation.getAllLoadedClasses()) {
+				if (instrumentation.isModifiableClass(loadedClass)) {
+					transformableLoadedClasses.add(loadedClass);
+					
+					try {
+						instrumentation.retransformClasses(loadedClass);
+					} catch (Throwable t) {
+						System.err.println("Error transforming " + loadedClass + ": " + t.getMessage());
+						t.printStackTrace();
+					}
+				}
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

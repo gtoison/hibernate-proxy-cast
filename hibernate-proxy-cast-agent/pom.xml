@@ -40,8 +40,8 @@
 				<configuration>
 					<archive>
 						<manifestEntries>
-							<Premain-Class>
-								com.github.gtoison.caster.agent.HibernateProxyCasterAgent</Premain-Class>
+							<Premain-Class>com.github.gtoison.caster.agent.HibernateProxyCasterAgent</Premain-Class>
+							<Can-Retransform-Classes>true</Can-Retransform-Classes>
 						</manifestEntries>
 					</archive>
 				</configuration>
