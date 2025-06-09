@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import com.foo.Animal;
 import com.foo.Bird;
 import com.foo.Insect;
+import com.foo.Mortal;
 import com.foo.Walker;
 import com.foo.Winged;
 
@@ -33,6 +34,7 @@ class HibernateProxyJandexIndexerTest {
 			HibernateProxyJandexIndexer indexer = new HibernateProxyJandexIndexer(index);
 			
 			assertFalse(indexer.couldBeAProxy(Animal.class.getName()), "Base class can't be a proxy of 'wrong' class");
+			assertFalse(indexer.couldBeAProxy(Mortal.class.getName()), "Interface implemented by base class can't be a proxy of 'wrong' class");
 			assertTrue(indexer.couldBeAProxy(Bird.class.getName()));
 			assertTrue(indexer.couldBeAProxy(Insect.class.getName()));
 			assertTrue(indexer.couldBeAProxy(Walker.class.getName()));

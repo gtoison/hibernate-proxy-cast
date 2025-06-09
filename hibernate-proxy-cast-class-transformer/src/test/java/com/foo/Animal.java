@@ -5,5 +5,5 @@ import jakarta.persistence.Inheritance;
 
 @Entity
 @Inheritance
-public class Animal {
+public class Animal implements Mortal {
 }

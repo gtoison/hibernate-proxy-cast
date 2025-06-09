@@ -32,8 +32,6 @@ public class HibernateProxyJandexIndexer {
 			ClassInfo baseClass = inheritanceInstance.target().asClass();
 			LOGGER.debug("Indexing base class {}", baseClass);
 
-			addInterfaces(index, baseClass);
-
 			for (ClassInfo subClass : index.getAllKnownSubclasses(baseClass.name())) {
 				baseClassesExtensions.add(subClass.toString());
 				LOGGER.debug("Indexing subclass {}", subClass);
