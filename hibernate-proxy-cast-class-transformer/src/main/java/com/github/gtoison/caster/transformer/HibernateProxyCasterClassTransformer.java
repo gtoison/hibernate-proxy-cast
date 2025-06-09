@@ -51,7 +51,7 @@ public class HibernateProxyCasterClassTransformer implements ClassFileTransforme
 	}
 
 	public byte[] transform(ClassLoader loader, String className, byte[] classfileBuffer) throws IllegalClassFormatException {
-		if (loader == null) {
+		if (loader == null || ClassLoader.getPlatformClassLoader() == loader) {
 			// For base Java classes the loader is null and we don't want to transform
 			return null;
 		}
