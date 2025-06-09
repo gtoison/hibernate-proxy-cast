@@ -76,6 +76,16 @@ class ProxyCastTest {
 			assertNotNull(checker.getHumanPetAsMollusc(human));
 		});
 	}
+	
+	@Test
+	void covarCastTest(SessionFactoryScope scope) {
+		scope.inTransaction(session -> {
+			Human human = session.getReference(Human.class, 2);
+			AnimalChecker checker = new AnimalChecker();
+
+			assertTrue(checker.getHumanPetAsMolluscWithCovarPetCast(human) instanceof Mollusc);
+		});
+	}
 
 	@Test
 	void defaultInterfaceTest(SessionFactoryScope scope) {

@@ -23,6 +23,17 @@ public class AnimalChecker {
 
 		return null;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public <A extends Animal> A covarPetCast(Human human, Class<A> type) {
+		return (A) human.getPet();
+	}
+	
+	public Mollusc getHumanPetAsMolluscWithCovarPetCast(Human human) {
+		Mollusc mollusc = covarPetCast(human, Mollusc.class);
+		
+		return mollusc;
+	}
 
 	public String wingedFlapWings(Animal a) {
 		return ((Winged) a).flapWings();
