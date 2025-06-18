@@ -5,7 +5,9 @@ Hibernate proxy caster modifies classes to replace the casts and instanceof chec
 The proxy caster needs to know which classes and interfaces might be Hibernate proxies, it uses a Jandex index for that.
 You can use the maven plugin to build the index:
 
-```
+```xml
+	<build>
+		<plugins>
 			<plugin>
 				<groupId>io.smallrye</groupId>
 				<artifactId>jandex-maven-plugin</artifactId>
@@ -20,13 +22,15 @@ You can use the maven plugin to build the index:
 					</execution>
 				</executions>
 			</plugin>
+		</plugins>
+	</build>
 ```
 
 ### Runtime dependency
 
 A small library is needed as a runtime dependency:
 
-```
+```xml
 		<dependency>
 			<groupId>com.github.gtoison</groupId>
 			<artifactId>hibernate-proxy-caster</artifactId>
@@ -47,7 +51,10 @@ The proxy caster can modify classes at runtime with an agent. Add the following 
 
 Alternatively the proxy caster can modify the bytecode from the `.class` files with a maven plugin:
 
-```
+```xml
+	<build>
+		<plugins>
+			<!-- Also add the Jandex plugin here -->
 			<plugin>
 				<groupId>com.github.gtoison</groupId>
 				<artifactId>hibernate-proxy-caster-maven-plugin</artifactId>
@@ -63,13 +70,15 @@ Alternatively the proxy caster can modify the bytecode from the `.class` files w
 				</executions>
 			</plugin>
 		</plugins>
+		</plugins>
+	</build>
 ```
 
 # The problem
 
 Consider the following JPA model:
 
-```
+```java
 @Entity
 class Animal {
 }
@@ -100,7 +109,7 @@ If you get an uninitialized instance of this proxy, essentially all its fields w
 Now the trouble comes when combining lazy loading and inheritance: in case Hibernate does not know the actual class of an entity, it might generate a proxy of the _wrong_ class.
 For instance, assuming that `Animal#1` is a `Human`, the following code will not work as expected:
 
-```
+```java
 Animal a = session.getReference(Animal.class, 1);
 if (a instanceof Human h) {
   h.thinkAboutDeathAndTheUniverse();
@@ -118,7 +127,7 @@ In Hibernate 6.6 a new `@ConcreteProxy` was added, it guarantees that Hibernate 
 It is also possible to get the actual class from Hibernate with `Hibernate.getClass(animal)` and then one can get the object of the expected class with `Human h = (Human) Hibernate.unproxy(animal)`.
 The equivalent of the idiomatic code:
 
-```
+```java
 if (animal instanceof Human human) {
   human.thinkAboutDeathAndTheUniverse();
 }
@@ -126,9 +135,9 @@ if (animal instanceof Human human) {
 
 Would be:
 
-```
+```java
 if (Human.class.isAssignableFrom(Hibernate.getClass(animal)) {
-  Human h = (Human) (Human) Hibernate.unproxy(animal);
+  Human human = (Human) Hibernate.unproxy(animal);
   human.thinkAboutDeathAndTheUniverse();
 }
 ```
